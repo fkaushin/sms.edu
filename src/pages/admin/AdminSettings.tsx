@@ -55,40 +55,40 @@ export const AdminSettings: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Profile Settings</h1>
+      <h1 className="text-2xl font-bold text-slate-900">Profile Settings</h1>
 
       {/* Avatar */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-slate-800 dark:text-white mb-6">Profile Photo</h2>
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+        <h2 className="text-lg font-semibold text-slate-800 mb-6">Profile Photo</h2>
         <AvatarUpload userId={user?.id || ''} currentUrl={avatarUrl} size="lg" />
       </div>
 
       {/* Email */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-slate-200 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-800 dark:text-white flex items-center gap-2">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-slate-200">
+          <h2 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
             <Mail size={20} className="text-primary" />
             Email Address
           </h2>
         </div>
         <div className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Current Email</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Current Email</label>
             <input
               type="email"
               disabled
               value={user?.email || ''}
-              className="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-500 cursor-not-allowed"
+              className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-500 cursor-not-allowed"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">New Email</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">New Email</label>
             <input
               type="email"
               placeholder="Enter new email"
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
-              className="w-full p-2.5 border border-slate-200 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             />
           </div>
           <button
@@ -103,42 +103,42 @@ export const AdminSettings: React.FC = () => {
       </div>
 
       {/* Password */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-slate-200 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-800 dark:text-white flex items-center gap-2">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-slate-200">
+          <h2 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
             <Lock size={20} className="text-primary" />
             Change Password
           </h2>
         </div>
         <div className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Current Password</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Current Password</label>
             <input
               type="password"
               placeholder="Enter current password"
               value={currentPwd}
               onChange={(e) => setCurrentPwd(e.target.value)}
-              className="w-full p-2.5 border border-slate-200 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">New Password</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">New Password</label>
             <input
               type="password"
               placeholder="Min 8 characters"
               value={newPwd}
               onChange={(e) => setNewPwd(e.target.value)}
-              className="w-full p-2.5 border border-slate-200 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Confirm New Password</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Confirm New Password</label>
             <input
               type="password"
               placeholder="Repeat new password"
               value={confirmPwd}
               onChange={(e) => setConfirmPwd(e.target.value)}
-              className="w-full p-2.5 border border-slate-200 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
             />
           </div>
           <button

@@ -51,7 +51,7 @@ export const Login: React.FC = () => {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full bg-white dark:bg-slate-900 rounded-xl shadow-xl ring-1 ring-slate-200 dark:ring-slate-800 p-8">
         <h2 className="text-2xl font-bold text-center text-slate-900 dark:text-white mb-8">
-          Student Management System
+          Summit Meridian Sciences University
         </h2>
         <form className="space-y-6" onSubmit={handleLogin}>
           <div>

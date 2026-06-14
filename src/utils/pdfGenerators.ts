@@ -12,7 +12,7 @@ export interface StudentIdData {
   isActive: boolean;
 }
 
-const UNIVERSITY_NAME = 'National University';
+const UNIVERSITY_NAME = 'Summit Meridian Sciences University';
 const UNIVERSITY_TAGLINE = 'Excellence in Education';
 const PRIMARY_COLOR: [number, number, number] = [37, 99, 235];
 const DARK_COLOR: [number, number, number] = [15, 23, 42];

@@ -67,13 +67,13 @@ export const StudentChangePassword: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+      <h1 className="text-2xl font-bold text-slate-900">
         {user?.firstLoginCompleted ? 'Change Password' : 'Setup Your Password'}
       </h1>
 
-      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-slate-200 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-800 dark:text-white flex items-center gap-2">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-slate-200">
+          <h2 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
             <Lock size={20} className="text-primary" />
             Security Settings
           </h2>
@@ -100,24 +100,24 @@ export const StudentChangePassword: React.FC = () => {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Temporary/Current Password</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Temporary/Current Password</label>
             <input 
               type="password" 
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               placeholder="Enter current password" 
-              className="w-full p-3 border border-slate-200 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-mono" 
+              className="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-mono" 
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">New Password</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">New Password</label>
             <input 
               type="password" 
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="Enter new password" 
-              className="w-full p-3 border border-slate-200 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-mono" 
+              className="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-mono" 
             />
             <p className="text-xs text-slate-500 mt-1.5 flex items-center gap-1">
               <AlertCircle size={12} /> Minimum 8 characters
@@ -125,13 +125,13 @@ export const StudentChangePassword: React.FC = () => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Confirm New Password</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Confirm New Password</label>
             <input 
               type="password" 
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Confirm new password" 
-              className="w-full p-3 border border-slate-200 dark:border-slate-600 dark:bg-slate-900 dark:text-white rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-mono" 
+              className="w-full p-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-mono" 
             />
           </div>
 

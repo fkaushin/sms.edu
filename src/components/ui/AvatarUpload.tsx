@@ -16,6 +16,50 @@ const sizeMap = {
   lg: { wrapper: 'w-32 h-32', icon: 56, btn: 'p-2' },
 };
 
+const compressImage = (file: File, maxWidth = 400, quality = 0.8): Promise<File> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const newFile = new File([blob], file.name.replace(/\.[^/.]+$/, '') + '.webp', {
+                type: 'image/webp',
+                lastModified: Date.now(),
+              });
+              resolve(newFile);
+            } else {
+              reject(new Error('Compression failed'));
+            }
+          },
+          'image/webp',
+          quality
+        );
+      };
+      img.onerror = (error) => reject(error);
+    };
+    reader.onerror = (error) => reject(error);
+  });
+};
+
 export const AvatarUpload: React.FC<AvatarUploadProps> = ({
   userId,
   currentUrl,
@@ -29,15 +73,20 @@ export const AvatarUpload: React.FC<AvatarUploadProps> = ({
   const { wrapper, icon, btn } = sizeMap[size];
 
   const handleFile = async (file: File) => {
-    // Show local preview immediately
-    const reader = new FileReader();
-    reader.onload = (e) => setPreview(e.target?.result as string);
-    reader.readAsDataURL(file);
-
     setUploading(true);
     setProgress(0);
+
     try {
-      const url = await storageService.uploadAvatar(userId, file, (pct) => setProgress(pct));
+      // Compress and convert to WebP
+      const compressedFile = await compressImage(file, 400, 0.8);
+
+      // Show local preview of the compressed image
+      const reader = new FileReader();
+      reader.onload = (e) => setPreview(e.target?.result as string);
+      reader.readAsDataURL(compressedFile);
+
+      // Upload the optimized WebP file
+      const url = await storageService.uploadAvatar(userId, compressedFile, (pct) => setProgress(pct));
       await storageService.saveAvatarToProfile(userId, url);
       setPreview(url);
       onUploaded?.(url);

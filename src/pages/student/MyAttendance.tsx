@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { AttendanceSummaryCards } from '../../components/attendance/AttendanceSummaryCards';
 import { AttendanceCalendar } from '../../components/attendance/AttendanceCalendar';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
@@ -14,6 +14,16 @@ export const MyAttendance: React.FC = () => {
     queryFn: () => attendanceService.getAttendance(user?.id),
     enabled: !!user?.id
   });
+
+  const stats = useMemo(() => {
+    const total = attendanceHistory.length;
+    const present = attendanceHistory.filter(r => r.status === 'PRESENT' || r.status === 'LATE').length;
+    const absent = attendanceHistory.filter(r => r.status === 'ABSENT').length;
+    const percentage = total > 0 ? (present / total) * 100 : 100;
+    
+    return { total, present, absent, percentage };
+  }, [attendanceHistory]);
+
   return (
     <div>
       <div className="mb-6">
@@ -21,11 +31,16 @@ export const MyAttendance: React.FC = () => {
         <p className="text-sm text-slate-500 mt-1">View your attendance history and statistics.</p>
       </div>
 
-      <AttendanceSummaryCards />
+      <AttendanceSummaryCards 
+        total={stats.total}
+        present={stats.present}
+        absent={stats.absent}
+        percentage={stats.percentage}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1">
-          <AttendanceCalendar />
+          <AttendanceCalendar attendanceRecords={attendanceHistory} />
         </div>
         
         <Card className="lg:col-span-2">

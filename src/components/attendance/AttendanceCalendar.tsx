@@ -1,11 +1,30 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
 
-export const AttendanceCalendar: React.FC = () => {
-  const days = Array.from({ length: 30 }, (_, i) => i + 1);
+interface AttendanceCalendarProps {
+  attendanceRecords: any[];
+}
+
+export const AttendanceCalendar: React.FC<AttendanceCalendarProps> = ({ attendanceRecords }) => {
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
   const getStatus = (day: number) => {
-    if (day % 7 === 0) return 'absent';
-    if (day % 15 === 0) return 'late';
+    // Format current day to match record dates (YYYY-MM-DD)
+    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const recordsForDay = attendanceRecords.filter(r => r.date === dateStr);
+    
+    if (recordsForDay.length === 0) return 'none';
+    
+    // If there's any absent record for that day, mark it as absent (or customize logic)
+    const hasAbsent = recordsForDay.some(r => r.status === 'ABSENT');
+    const hasLate = recordsForDay.some(r => r.status === 'LATE');
+    
+    if (hasAbsent) return 'absent';
+    if (hasLate) return 'late';
     return 'present';
   };
 
@@ -27,7 +46,8 @@ export const AttendanceCalendar: React.FC = () => {
                 className={`aspect-square flex items-center justify-center rounded-lg text-sm font-medium border
                   ${status === 'present' ? 'bg-green-50 border-green-200 text-green-700' : 
                     status === 'absent' ? 'bg-red-50 border-red-200 text-red-700' : 
-                    'bg-yellow-50 border-yellow-200 text-yellow-700'}`}
+                    status === 'late' ? 'bg-yellow-50 border-yellow-200 text-yellow-700' :
+                    'bg-slate-50 border-slate-100 text-slate-400'}`}
               >
                 {day}
               </div>

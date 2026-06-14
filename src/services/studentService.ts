@@ -205,5 +205,68 @@ export const studentService = {
 
     if (error) throw error;
     return true;
+  },
+
+  getStudentDashboardStats: async (studentId: string) => {
+    // 1. Get Attendance
+    const { data: attendanceData, error: attError } = await supabase
+      .from('attendance')
+      .select('status')
+      .eq('student_id', studentId);
+      
+    if (attError) throw attError;
+    
+    let attendancePercentage = 100;
+    if (attendanceData && attendanceData.length > 0) {
+      const presentOrLate = attendanceData.filter(a => a.status === 'PRESENT' || a.status === 'LATE').length;
+      attendancePercentage = Math.round((presentOrLate / attendanceData.length) * 100);
+    } else {
+      attendancePercentage = 0; // Or leave at 100 if no classes yet
+    }
+
+    // 2. Get Marks & Subjects
+    const { data: marksData, error: marksError } = await supabase
+      .from('marks')
+      .select(`
+        score,
+        max_score,
+        subjects (name)
+      `)
+      .eq('student_id', studentId);
+      
+    if (marksError) throw marksError;
+
+    let averageMarks = 0;
+    const subjectScores: { subject: string; score: number }[] = [];
+    
+    if (marksData && marksData.length > 0) {
+      let totalPercentage = 0;
+      marksData.forEach((mark: any) => {
+        const percentage = Math.round((mark.score / mark.max_score) * 100);
+        totalPercentage += percentage;
+        subjectScores.push({
+          subject: mark.subjects?.name || 'Unknown',
+          score: percentage
+        });
+      });
+      averageMarks = Math.round(totalPercentage / marksData.length);
+    }
+
+    // 3. Get Recent Activities
+    const { data: activitiesData, error: actError } = await supabase
+      .from('activities')
+      .select('*')
+      .eq('user_id', studentId)
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    if (actError) throw actError;
+
+    return {
+      attendancePercentage,
+      averageMarks,
+      recentActivities: activitiesData || [],
+      performanceSnapshot: subjectScores,
+    };
   }
 };

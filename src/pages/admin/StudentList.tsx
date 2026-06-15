@@ -146,7 +146,7 @@ export const StudentList: React.FC = () => {
             className="hidden"
           />
           <Button 
-            variant="outline" 
+            variant="secondary" 
             className="flex items-center gap-2 bg-white"
             onClick={() => fileInputRef.current?.click()}
             disabled={isImporting}

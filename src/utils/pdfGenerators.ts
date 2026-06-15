@@ -370,6 +370,17 @@ export async function generateAttendanceCertificate(data: AttendanceCertData): P
   pdf.setDrawColor(203, 213, 225);
   pdf.setLineWidth(0.5);
   const sigY = ph - 28;
+  
+  // Try to load and draw signature image
+  const sigB64 = await loadImageAsBase64('/signature.png');
+  if (sigB64) {
+    try {
+      // Draw signature above the lines
+      pdf.addImage(sigB64, 'PNG', 45, sigY - 18, 30, 18);
+      pdf.addImage(sigB64, 'PNG', pw - 75, sigY - 18, 30, 18);
+    } catch { /* ignore */ }
+  }
+
   pdf.line(30, sigY, 90, sigY);
   pdf.line(pw - 90, sigY, pw - 30, sigY);
   pdf.setFont('helvetica', 'normal');

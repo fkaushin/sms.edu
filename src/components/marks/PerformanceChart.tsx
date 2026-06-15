@@ -2,15 +2,11 @@ import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
 
-const data = [
-  { subject: 'Math', score: 85 },
-  { subject: 'Physics', score: 92 },
-  { subject: 'Chemistry', score: 78 },
-  { subject: 'English', score: 88 },
-  { subject: 'History', score: 95 },
-];
+interface PerformanceChartProps {
+  data: { subject: string; score: number }[];
+}
 
-export const PerformanceChart: React.FC = () => {
+export const PerformanceChart: React.FC<PerformanceChartProps> = ({ data }) => {
   return (
     <Card className="col-span-1 lg:col-span-2">
       <CardHeader>

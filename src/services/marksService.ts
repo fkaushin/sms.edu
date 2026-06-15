@@ -61,5 +61,54 @@ export const marksService = {
     }
 
     return data;
+  },
+
+  getStudentMarksForExam: async (studentId: string, examType: string) => {
+    const { data, error } = await supabase
+      .from('marks')
+      .select('*')
+      .eq('student_id', studentId)
+      .eq('exam_type', examType);
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  saveBulkMarks: async (records: { student_id: string; subject_id: string; score: number; max_score: number; exam_type: string; grade: string }[]) => {
+    if (!records.length) return;
+
+    const studentId = records[0].student_id;
+    const examType = records[0].exam_type;
+    const subjectIds = records.map(r => r.subject_id);
+
+    // Delete existing records for these subjects and exam type for this student
+    const { error: deleteError } = await supabase
+      .from('marks')
+      .delete()
+      .eq('student_id', studentId)
+      .eq('exam_type', examType)
+      .in('subject_id', subjectIds);
+
+    if (deleteError) throw deleteError;
+
+    // Insert new records
+    const { error: insertError } = await supabase
+      .from('marks')
+      .insert(records);
+
+    if (insertError) throw insertError;
+
+    // Log activity
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (sessionData?.session?.user) {
+      await supabase.from('activities').insert({
+        user_id: sessionData.session.user.id,
+        title: 'Bulk Marks Entered',
+        description: `Entered ${examType} marks for ${records.length} subjects for student ${studentId}.`,
+        type: 'SYSTEM'
+      });
+    }
+
+    return true;
   }
 };

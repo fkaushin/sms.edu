@@ -1,40 +1,14 @@
-import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { studentService } from '../../services/studentService';
+import React from 'react';
+import type { Student } from '../../types';
+import { FileEdit } from 'lucide-react';
 
-export const MarksTable: React.FC = () => {
-  const { data: mockStudents = [], isLoading } = useQuery({
-    queryKey: ['students'],
-    queryFn: studentService.getStudents
-  });
+interface MarksTableProps {
+  students: Student[];
+  isLoading: boolean;
+  onEnterMarks: (student: Student) => void;
+}
 
-  const [scores, setScores] = useState<Record<string, number>>({});
-  const maxScore = 100;
-
-  const handleScoreChange = (studentId: string, value: string) => {
-    const num = parseFloat(value);
-    if (!isNaN(num) && num >= 0 && num <= maxScore) {
-      setScores(prev => ({ ...prev, [studentId]: num }));
-    } else if (value === '') {
-      setScores(prev => {
-        const next = { ...prev };
-        delete next[studentId];
-        return next;
-      });
-    }
-  };
-
-  const getGrade = (score?: number) => {
-    if (score === undefined) return '-';
-    const percent = (score / maxScore) * 100;
-    if (percent >= 90) return 'A+';
-    if (percent >= 80) return 'A';
-    if (percent >= 70) return 'B';
-    if (percent >= 60) return 'C';
-    if (percent >= 50) return 'D';
-    return 'F';
-  };
-
+export const MarksTable: React.FC<MarksTableProps> = ({ students, isLoading, onEnterMarks }) => {
   if (isLoading) return <div className="p-8 text-center text-slate-500">Loading students...</div>;
 
   return (
@@ -44,37 +18,34 @@ export const MarksTable: React.FC = () => {
           <thead className="bg-slate-50 border-b border-slate-200 text-slate-600">
             <tr>
               <th className="px-6 py-4 font-medium">Student Name</th>
-              <th className="px-6 py-4 font-medium">Subject</th>
-              <th className="px-6 py-4 font-medium">Exam Type</th>
-              <th className="px-6 py-4 font-medium">Score</th>
-              <th className="px-6 py-4 font-medium">Max Score</th>
-              <th className="px-6 py-4 font-medium">Grade</th>
+              <th className="px-6 py-4 font-medium">Enrollment No</th>
+              <th className="px-6 py-4 font-medium">Department</th>
+              <th className="px-6 py-4 font-medium text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200">
-            {mockStudents.map((student) => (
+            {students.map((student) => (
               <tr key={student.id} className="hover:bg-slate-50 transition-colors">
                 <td className="px-6 py-4 font-medium text-slate-900">{student.firstName} {student.lastName}</td>
-                <td className="px-6 py-4 text-slate-600">Data Structures</td>
-                <td className="px-6 py-4 text-slate-600">Midterm</td>
-                <td className="px-6 py-4">
-                  <input 
-                    type="number" 
-                    min="0"
-                    max={maxScore}
-                    className="w-20 px-2 py-1 border border-slate-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
-                    value={scores[student.id] || ''}
-                    onChange={(e) => handleScoreChange(student.id, e.target.value)}
-                  />
-                </td>
-                <td className="px-6 py-4 text-slate-600">{maxScore}</td>
-                <td className="px-6 py-4">
-                  <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${getGrade(scores[student.id]) === 'F' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
-                    {getGrade(scores[student.id])}
-                  </span>
+                <td className="px-6 py-4 text-slate-600">{student.enrollmentNo}</td>
+                <td className="px-6 py-4 text-slate-600">{student.department}</td>
+                <td className="px-6 py-4 text-right">
+                  <button 
+                    onClick={() => onEnterMarks(student)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-xs font-medium transition-colors"
+                  >
+                    <FileEdit size={14} /> Enter Marks
+                  </button>
                 </td>
               </tr>
             ))}
+            {students.length === 0 && (
+              <tr>
+                <td colSpan={4} className="px-6 py-8 text-center text-slate-500">
+                  No students found in this department.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

@@ -34,13 +34,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
       
       <aside className={cn(
         "fixed inset-y-0 left-0 z-50 w-64 flex flex-col",
-        "bg-white dark:bg-slate-900",
-        "border-r border-slate-200 dark:border-slate-800",
+        "bg-white",
+        "border-r border-slate-200",
         "transform transition-transform duration-300 ease-in-out md:translate-x-0",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         {/* Logo */}
-        <div className="h-16 flex items-center justify-between px-5 border-b border-slate-200 dark:border-slate-800">
+        <div className="h-16 flex items-center justify-between px-5 border-b border-slate-200">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-md">
               <GraduationCap size={16} className="text-white" />
@@ -67,8 +67,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                 "group relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium",
                 "transition-all duration-200 ease-in-out",
                 isActive
-                  ? "bg-gradient-to-r from-blue-500/10 to-indigo-500/10 text-blue-700 dark:text-blue-400 shadow-sm"
-                  : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+                  ? "bg-gradient-to-r from-blue-500/10 to-indigo-500/10 text-blue-700 shadow-sm"
+                  : "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
               )}
             >
               {({ isActive }) => (
@@ -85,7 +85,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                     className={cn(
                       "transition-all duration-200 flex-shrink-0",
                       isActive 
-                        ? "text-blue-600 dark:text-blue-400 scale-110" 
+                        ? "text-blue-600 scale-110" 
                         : "group-hover:scale-105"
                     )} 
                   />
@@ -104,10 +104,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
         </nav>
         
         {/* Logout */}
-        <div className="p-3 border-t border-slate-200 dark:border-slate-800">
+        <div className="p-3 border-t border-slate-200">
           <button 
             onClick={logout}
-            className="group flex items-center gap-3 px-3 py-2.5 w-full rounded-xl text-sm font-medium text-slate-500 dark:text-slate-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200"
+            className="group flex items-center gap-3 px-3 py-2.5 w-full rounded-xl text-sm font-medium text-slate-500 hover:bg-red-50 hover:text-red-600 transition-all duration-200"
           >
             <LogOut size={18} className="group-hover:scale-110 transition-transform duration-200" />
             <span>Logout</span>

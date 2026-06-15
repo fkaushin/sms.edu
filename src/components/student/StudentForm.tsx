@@ -52,11 +52,15 @@ export const StudentForm: React.FC<StudentFormProps> = ({ initialData, isEdit })
     mutationFn: async (data: StudentFormValues) => {
       const deptId = DEPARTMENT_UUIDS[data.department] || DEPARTMENT_UUIDS['Computer Science'];
 
+      const capitalize = (s: string) => s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : '';
+      const formattedFirstName = capitalize(data.firstName);
+      const formattedLastName = capitalize(data.lastName);
+
       if (isEdit && initialData?.id) {
         // Edit flow
         return studentService.updateStudent(initialData.id, {
-          firstName: data.firstName,
-          lastName: data.lastName,
+          firstName: formattedFirstName,
+          lastName: formattedLastName,
           dateOfBirth: data.dateOfBirth,
           gender: data.gender,
           phone: data.phone,
@@ -66,8 +70,8 @@ export const StudentForm: React.FC<StudentFormProps> = ({ initialData, isEdit })
       } else {
         // Creation flow (calling invite-student Edge Function via Service)
         const payload = {
-          firstName: data.firstName,
-          lastName: data.lastName,
+          firstName: formattedFirstName,
+          lastName: formattedLastName,
           personalEmail: data.personalEmail,
           departmentId: deptId,
           year: data.year,

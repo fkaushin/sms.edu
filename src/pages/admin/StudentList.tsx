@@ -56,12 +56,17 @@ export const StudentList: React.FC = () => {
         let successCount = 0;
         let errorCount = 0;
         
+        const capitalize = (s: string) => s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : '';
+
         for (const row of rows) {
           try {
             const deptRaw = row['Department'] || row.department || '';
+            const rawFirstName = row['First Name'] || row.firstName || 'Unknown';
+            const rawLastName = row['Last Name'] || row.lastName || 'Student';
+
             const payload = {
-               firstName: row['First Name'] || row.firstName || 'Unknown',
-               lastName: row['Last Name'] || row.lastName || 'Student',
+               firstName: capitalize(rawFirstName),
+               lastName: capitalize(rawLastName),
                personalEmail: row['Personal Email'] || row['Email'] || row.personalEmail,
                dateOfBirth: row['Date of Birth'] || row.dateOfBirth || '2000-01-01',
                gender: (row['Gender'] || row.gender || 'OTHER').toUpperCase(),

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { UserCircle, BookOpen, MapPin, Phone, Mail, Save, Download, Loader2, Calendar, Users } from 'lucide-react';
+import { UserCircle, BookOpen, MapPin, Phone, Mail, Save, Download, Loader2, Calendar, Users, Edit2 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { studentService } from '../../services/studentService';
@@ -15,6 +15,7 @@ import { marksService } from '../../services/marksService';
 
 export const StudentProfile: React.FC = () => {
   const { user } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [dob, setDob] = useState('');
@@ -40,6 +41,14 @@ export const StudentProfile: React.FC = () => {
     enabled: !!student?.id,
   });
 
+  const handleEditClick = () => {
+    setPhone(student?.phone || '');
+    setAddress(student?.address || '');
+    setDob(student?.dateOfBirth || '');
+    setGender(student?.gender || '');
+    setIsEditing(true);
+  };
+
   const contactMutation = useMutation({
     mutationFn: async () => {
       if (!student?.id) throw new Error('No student record found');
@@ -52,6 +61,7 @@ export const StudentProfile: React.FC = () => {
     },
     onSuccess: () => {
       toast.success('Information updated successfully!');
+      setIsEditing(false);
       refetch();
     },
     onError: () => toast.error('Failed to update information.'),
@@ -200,73 +210,116 @@ export const StudentProfile: React.FC = () => {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-slate-800 flex items-center gap-2 mb-4 pb-2 border-b border-slate-100">
-                <MapPin size={20} className="text-primary" />
-                Editable Information
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
-                    <Mail size={14} /> Email
-                  </label>
-                  <input type="email" disabled value={user?.email || ''}
-                    className="w-full p-2.5 border border-slate-200 bg-slate-50 rounded-lg text-slate-500 text-sm cursor-not-allowed" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
-                    <Phone size={14} /> Phone Number
-                  </label>
-                  <input type="tel"
-                    defaultValue={student?.phone || ''}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
-                    <Calendar size={14} /> Date of Birth
-                  </label>
-                  <input type="date"
-                    defaultValue={student?.dateOfBirth || ''}
-                    onChange={(e) => setDob(e.target.value)}
-                    className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
-                    <Users size={14} /> Gender
-                  </label>
-                  <select
-                    defaultValue={student?.gender || ''}
-                    onChange={(e) => setGender(e.target.value)}
-                    className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm">
-                    <option value="">Select Gender</option>
-                    <option value="MALE">Male</option>
-                    <option value="FEMALE">Female</option>
-                    <option value="OTHER">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
-                    <MapPin size={14} /> Address
-                  </label>
-                  <textarea rows={3}
-                    defaultValue={student?.address || ''}
-                    onChange={(e) => setAddress(e.target.value)}
-                    className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm">
-                  </textarea>
-                </div>
-                <div className="pt-2">
+              <div className="flex justify-between items-center mb-4 pb-2 border-b border-slate-100">
+                <h3 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
+                  <MapPin size={20} className="text-primary" />
+                  Contact & Additional Info
+                </h3>
+                {!isEditing && (
                   <button
-                    onClick={() => contactMutation.mutate()}
-                    disabled={contactMutation.isPending}
-                    className="w-full py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-60"
+                    onClick={handleEditClick}
+                    className="flex items-center gap-1.5 text-sm text-primary font-medium hover:text-blue-700 hover:bg-blue-50 px-2.5 py-1.5 rounded-lg transition-colors"
                   >
-                    {contactMutation.isPending
-                      ? <Loader2 size={16} className="animate-spin" />
-                      : <Save size={18} />}
-                    Save Information
+                    <Edit2 size={14} />
+                    Edit
                   </button>
-                </div>
+                )}
               </div>
+              
+              {isEditing ? (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
+                      <Mail size={14} /> Email
+                    </label>
+                    <input type="email" disabled value={user?.email || ''}
+                      className="w-full p-2.5 border border-slate-200 bg-slate-50 rounded-lg text-slate-500 text-sm cursor-not-allowed" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
+                      <Phone size={14} /> Phone Number
+                    </label>
+                    <input type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
+                      <Calendar size={14} /> Date of Birth
+                    </label>
+                    <input type="date"
+                      value={dob}
+                      onChange={(e) => setDob(e.target.value)}
+                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
+                      <Users size={14} /> Gender
+                    </label>
+                    <select
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}
+                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm">
+                      <option value="">Select Gender</option>
+                      <option value="MALE">Male</option>
+                      <option value="FEMALE">Female</option>
+                      <option value="OTHER">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
+                      <MapPin size={14} /> Address
+                    </label>
+                    <textarea rows={3}
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm">
+                    </textarea>
+                  </div>
+                  <div className="pt-2 flex gap-3">
+                    <button
+                      onClick={() => setIsEditing(false)}
+                      className="flex-1 py-2.5 border border-slate-200 text-slate-600 rounded-lg font-medium hover:bg-slate-50 transition-colors flex items-center justify-center shadow-sm"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => contactMutation.mutate()}
+                      disabled={contactMutation.isPending}
+                      className="flex-1 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-60"
+                    >
+                      {contactMutation.isPending
+                        ? <Loader2 size={16} className="animate-spin" />
+                        : <Save size={18} />}
+                      Save
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="grid grid-cols-3 text-sm">
+                    <span className="text-slate-500">Email</span>
+                    <span className="col-span-2 font-medium text-slate-900">{user?.email || '—'}</span>
+                  </div>
+                  <div className="grid grid-cols-3 text-sm">
+                    <span className="text-slate-500">Phone</span>
+                    <span className="col-span-2 font-medium text-slate-900">{student?.phone || '—'}</span>
+                  </div>
+                  <div className="grid grid-cols-3 text-sm">
+                    <span className="text-slate-500">Date of Birth</span>
+                    <span className="col-span-2 font-medium text-slate-900">{student?.dateOfBirth || '—'}</span>
+                  </div>
+                  <div className="grid grid-cols-3 text-sm">
+                    <span className="text-slate-500">Gender</span>
+                    <span className="col-span-2 font-medium text-slate-900">{student?.gender || '—'}</span>
+                  </div>
+                  <div className="grid grid-cols-3 text-sm">
+                    <span className="text-slate-500">Address</span>
+                    <span className="col-span-2 font-medium text-slate-900">{student?.address || '—'}</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

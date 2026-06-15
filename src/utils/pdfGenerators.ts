@@ -375,9 +375,10 @@ export async function generateAttendanceCertificate(data: AttendanceCertData): P
   const sigB64 = await loadImageAsBase64('/signature.png');
   if (sigB64) {
     try {
-      // Draw signature above the lines
-      pdf.addImage(sigB64, 'PNG', 45, sigY - 18, 30, 18);
-      pdf.addImage(sigB64, 'PNG', pw - 75, sigY - 18, 30, 18);
+      // Draw signature slightly angled for realism
+      // jsPDF addImage signature: addImage(imageData, format, x, y, w, h, alias, compression, rotation)
+      pdf.addImage(sigB64, 'PNG', 45, sigY - 18, 30, 18, undefined, 'FAST', -5);
+      pdf.addImage(sigB64, 'PNG', pw - 75, sigY - 18, 30, 18, undefined, 'FAST', 3);
     } catch { /* ignore */ }
   }
 

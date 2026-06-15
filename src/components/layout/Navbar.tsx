@@ -2,6 +2,8 @@ import React from 'react';
 import { Menu, Bell, Search, User as UserIcon } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
+import { NotificationDropdown } from './NotificationDropdown';
+
 interface NavbarProps {
   setSidebarOpen: (isOpen: boolean) => void;
 }
@@ -30,10 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({ setSidebarOpen }) => {
       </div>
 
       <div className="flex items-center gap-4">
-        <button className="relative p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors">
-          <Bell size={20} />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-danger rounded-full"></span>
-        </button>
+        <NotificationDropdown />
         
         <div className="flex items-center gap-3 border-l border-slate-200 pl-4 ml-2">
           <div className="hidden md:block text-right">

@@ -31,6 +31,62 @@ export const attendanceService = {
     }));
   },
 
+  getDepartments: async () => {
+    const { data, error } = await supabase.from('departments').select('id, name').order('name');
+    if (error) throw error;
+    return data || [];
+  },
+
+  getSubjects: async (departmentId?: string) => {
+    let query = supabase.from('subjects').select('id, name, department_id').order('name');
+    if (departmentId) {
+      query = query.eq('department_id', departmentId);
+    }
+    const { data, error } = await query;
+    if (error) throw error;
+    return data || [];
+  },
+
+  getAttendanceForDate: async (date: string, subjectId: string) => {
+    const { data, error } = await supabase
+      .from('attendance')
+      .select('student_id, status')
+      .eq('date', date)
+      .eq('subject_id', subjectId);
+
+    if (error) throw error;
+    const recordMap: Record<string, Status> = {};
+    if (data) {
+      data.forEach((record) => {
+        recordMap[record.student_id] = record.status as Status;
+      });
+    }
+    return recordMap;
+  },
+
+  markBulkAttendance: async (records: {student_id: string, subject_id: string, date: string, status: Status}[]) => {
+    if (!records.length) return;
+
+    // Supabase upsert works with array of objects
+    const { error } = await supabase
+      .from('attendance')
+      .upsert(records, { onConflict: 'student_id,subject_id,date' });
+
+    if (error) throw error;
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (sessionData?.session?.user) {
+      await supabase.from('activities').insert({
+        user_id: sessionData.session.user.id,
+        title: 'Bulk Attendance Recorded',
+        description: `Marked attendance for ${records.length} students.`,
+        type: 'SYSTEM'
+      });
+    }
+    
+    return true;
+  },
+
   markAttendance: async (studentId: string, subjectId: string, date: string, status: Status) => {
     const { data, error } = await supabase
       .from('attendance')

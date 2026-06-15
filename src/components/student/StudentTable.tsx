@@ -1,5 +1,5 @@
 import React from 'react';
-import { Edit, Send, Copy, RefreshCw } from 'lucide-react';
+import { Edit, Send, Copy, RefreshCw, Trash2 } from 'lucide-react';
 import type { Student } from '../../types';
 import { Link } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -35,6 +35,25 @@ export const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
       toast.error(err.message || 'Failed to dispatch credentials');
     }
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (studentId: string) => {
+      return studentService.deleteStudent(studentId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['students'] });
+      toast.success('Student deleted successfully');
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || 'Failed to delete student');
+    }
+  });
+
+  const handleDelete = (student: Student) => {
+    if (window.confirm(`Are you sure you want to delete ${student.firstName} ${student.lastName}? This action cannot be undone.`)) {
+      deleteMutation.mutate(student.id);
+    }
+  };
 
   const handleCopy = (student: Student) => {
     navigator.clipboard.writeText(`University Email: ${student.universityEmail}\nPassword: Password123 (Default)`);
@@ -116,6 +135,14 @@ export const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
                   >
                     <Edit size={14} /> Edit
                   </Link>
+                  <button 
+                    onClick={() => handleDelete(student)}
+                    disabled={deleteMutation.isPending}
+                    title="Delete Student"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium bg-red-50 text-red-600 hover:bg-red-100 transition-colors disabled:opacity-50"
+                  >
+                    <Trash2 size={14} /> Delete
+                  </button>
                 </td>
               </tr>
             ))}

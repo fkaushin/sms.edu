@@ -49,5 +49,37 @@ export const dashboardService = {
       type: act.type,
       timestamp: act.created_at,
     }));
+  },
+
+  getAttendanceTrends: async () => {
+    // Get past 7 days dates
+    const dates = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() - (6 - i));
+      return d.toISOString().split('T')[0];
+    });
+
+    const { data, error } = await supabase
+      .from('attendance')
+      .select('date, status')
+      .in('date', dates);
+
+    if (error) throw error;
+
+    // Group by date
+    const stats = dates.map(date => {
+      const dayData = data?.filter(d => d.date === date) || [];
+      const total = dayData.length;
+      const present = dayData.filter(d => d.status === 'PRESENT' || d.status === 'LATE').length;
+      const percentage = total > 0 ? Math.round((present / total) * 100) : 0;
+      
+      const dayName = new Date(date).toLocaleDateString('en-US', { weekday: 'short' });
+      return {
+        name: dayName,
+        present: percentage
+      };
+    });
+
+    return stats;
   }
 };

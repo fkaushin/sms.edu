@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Bell, Search, User as UserIcon } from 'lucide-react';
+import { Menu, Search, User as UserIcon } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 import { NotificationDropdown } from './NotificationDropdown';

@@ -98,7 +98,7 @@ export const storageService = {
   },
 
   // We no longer store avatar_url in the profiles table to avoid schema issues.
-  saveAvatarToProfile: async (userId: string, avatarUrl: string): Promise<void> => {
+  saveAvatarToProfile: async (_userId: string, _avatarUrl: string): Promise<void> => {
     // No-op
     return;
   },

@@ -97,22 +97,24 @@ export const storageService = {
     return data.publicUrl;
   },
 
-  // Update avatar URL in profile
+  // We no longer store avatar_url in the profiles table to avoid schema issues.
   saveAvatarToProfile: async (userId: string, avatarUrl: string): Promise<void> => {
-    const { error } = await supabase
-      .from('profiles')
-      .update({ avatar_url: avatarUrl })
-      .eq('id', userId);
-    if (error) throw error;
+    // No-op
+    return;
   },
 
   getProfileAvatarUrl: async (userId: string): Promise<string | null> => {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('avatar_url')
-      .eq('id', userId)
-      .single();
-    if (error) return null;
-    return (data as any)?.avatar_url || null;
+    try {
+      const { data: files, error } = await supabase.storage.from('avatars').list(userId);
+      if (error || !files || files.length === 0) return null;
+      
+      const avatarFile = files.find(f => f.name.startsWith('avatar.'));
+      if (!avatarFile) return null;
+
+      const { data } = supabase.storage.from('avatars').getPublicUrl(`${userId}/${avatarFile.name}`);
+      return data.publicUrl;
+    } catch {
+      return null;
+    }
   },
 };

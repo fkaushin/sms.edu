@@ -95,18 +95,27 @@ export const StudentTable: React.FC<StudentTableProps> = ({ students }) => {
                     onClick={() => sendCredsMutation.mutate(student.id)}
                     disabled={sendCredsMutation.isPending}
                     title={student.credentialsSent ? "Resend Credentials" : "Send Credentials"}
-                    className="p-1.5 text-slate-400 hover:text-primary transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors disabled:opacity-50"
                   >
-                    {student.credentialsSent ? <RefreshCw size={16} /> : <Send size={16} />}
+                    {student.credentialsSent ? (
+                      <><RefreshCw size={14} /> Resend</>
+                    ) : (
+                      <><Send size={14} /> Send</>
+                    )}
                   </button>
                   <button 
                     onClick={() => handleCopy(student)}
                     title="Copy Default Info"
-                    className="p-1.5 text-slate-400 hover:text-slate-700 transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
                   >
-                    <Copy size={16} />
+                    <Copy size={14} /> Copy
                   </button>
-                  <Link to={`/admin/students/${student.id}/edit`} className="p-1.5 text-slate-400 hover:text-blue-600 transition-colors"><Edit size={16} /></Link>
+                  <Link 
+                    to={`/admin/students/${student.id}/edit`} 
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors"
+                  >
+                    <Edit size={14} /> Edit
+                  </Link>
                 </td>
               </tr>
             ))}

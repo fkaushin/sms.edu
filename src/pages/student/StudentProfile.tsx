@@ -168,57 +168,87 @@ export const StudentProfile: React.FC = () => {
             <AvatarUpload userId={user?.id || ''} currentUrl={avatarUrl} size="sm" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
             <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-semibold text-slate-800 flex items-center gap-2 mb-4 pb-2 border-b border-slate-100">
+              {/* Personal Information */}
+              <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="text-lg font-semibold text-slate-800 flex items-center gap-2 mb-5 pb-3 border-b border-slate-100">
                   <UserCircle size={20} className="text-primary" />
                   Personal Information
                 </h3>
-                <div className="space-y-3">
-                  <div className="grid grid-cols-3 text-sm">
-                    <span className="text-slate-500">First Name</span>
-                    <span className="col-span-2 font-medium text-slate-900">{student?.firstName || '—'}</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+                      <UserCircle size={18} />
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-0.5">First Name</p>
+                      <p className="font-medium text-slate-900">{student?.firstName || '—'}</p>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-3 text-sm">
-                    <span className="text-slate-500">Last Name</span>
-                    <span className="col-span-2 font-medium text-slate-900">{student?.lastName || '—'}</span>
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+                      <UserCircle size={18} />
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-0.5">Last Name</p>
+                      <p className="font-medium text-slate-900">{student?.lastName || '—'}</p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div>
-                <h3 className="text-lg font-semibold text-slate-800 flex items-center gap-2 mb-4 pb-2 border-b border-slate-100">
-                  <BookOpen size={20} className="text-primary" />
+              {/* Academic Information */}
+              <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                <h3 className="text-lg font-semibold text-slate-800 flex items-center gap-2 mb-5 pb-3 border-b border-slate-100">
+                  <BookOpen size={20} className="text-emerald-600" />
                   Academic Information
                 </h3>
-                <div className="space-y-3">
-                  <div className="grid grid-cols-3 text-sm">
-                    <span className="text-slate-500">Enrollment No.</span>
-                    <span className="col-span-2 font-medium text-slate-900">{student?.enrollmentNo || '—'}</span>
+                <div className="space-y-5">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                      <BookOpen size={18} />
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-0.5">Enrollment No.</p>
+                      <p className="font-medium text-slate-900">{student?.enrollmentNo || '—'}</p>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-3 text-sm">
-                    <span className="text-slate-500">Department</span>
-                    <span className="col-span-2 font-medium text-slate-900">{student?.department || '—'}</span>
-                  </div>
-                  <div className="grid grid-cols-3 text-sm">
-                    <span className="text-slate-500">Current Year</span>
-                    <span className="col-span-2 font-medium text-slate-900">{student ? `Year ${student.year}` : '—'}</span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                        <MapPin size={18} />
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-0.5">Department</p>
+                        <p className="font-medium text-slate-900">{student?.department || '—'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                        <Calendar size={18} />
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-0.5">Current Year</p>
+                        <p className="font-medium text-slate-900">{student ? `Year ${student.year}` : '—'}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div>
-              <div className="flex justify-between items-center mb-4 pb-2 border-b border-slate-100">
+            {/* Contact & Additional Info */}
+            <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition-shadow h-fit">
+              <div className="flex justify-between items-center mb-5 pb-3 border-b border-slate-100">
                 <h3 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
-                  <MapPin size={20} className="text-primary" />
+                  <Phone size={20} className="text-violet-600" />
                   Contact & Additional Info
                 </h3>
                 {!isEditing && (
                   <button
                     onClick={handleEditClick}
-                    className="flex items-center gap-1.5 text-sm text-primary font-medium hover:text-blue-700 hover:bg-blue-50 px-2.5 py-1.5 rounded-lg transition-colors"
+                    className="flex items-center gap-1.5 text-sm text-violet-600 font-medium hover:text-violet-800 hover:bg-violet-50 px-3 py-1.5 rounded-lg transition-colors"
                   >
                     <Edit2 size={14} />
                     Edit
@@ -242,7 +272,7 @@ export const StudentProfile: React.FC = () => {
                     <input type="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm" />
+                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all text-sm" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
@@ -251,7 +281,7 @@ export const StudentProfile: React.FC = () => {
                     <input type="date"
                       value={dob}
                       onChange={(e) => setDob(e.target.value)}
-                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm" />
+                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all text-sm" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-2">
@@ -260,7 +290,7 @@ export const StudentProfile: React.FC = () => {
                     <select
                       value={gender}
                       onChange={(e) => setGender(e.target.value)}
-                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm">
+                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all text-sm">
                       <option value="">Select Gender</option>
                       <option value="MALE">Male</option>
                       <option value="FEMALE">Female</option>
@@ -274,7 +304,7 @@ export const StudentProfile: React.FC = () => {
                     <textarea rows={3}
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
-                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm">
+                      className="w-full p-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all text-sm">
                     </textarea>
                   </div>
                   <div className="pt-2 flex gap-3">
@@ -287,7 +317,7 @@ export const StudentProfile: React.FC = () => {
                     <button
                       onClick={() => contactMutation.mutate()}
                       disabled={contactMutation.isPending}
-                      className="flex-1 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-60"
+                      className="flex-1 py-2.5 bg-violet-600 text-white rounded-lg font-medium hover:bg-violet-700 transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-60"
                     >
                       {contactMutation.isPending
                         ? <Loader2 size={16} className="animate-spin" />
@@ -297,26 +327,57 @@ export const StudentProfile: React.FC = () => {
                   </div>
                 </div>
               ) : (
-                <div className="space-y-3">
-                  <div className="grid grid-cols-3 text-sm">
-                    <span className="text-slate-500">Email</span>
-                    <span className="col-span-2 font-medium text-slate-900">{user?.email || '—'}</span>
+                <div className="space-y-5">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-violet-50 text-violet-600 flex items-center justify-center shrink-0 mt-0.5">
+                      <Mail size={18} />
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-0.5">Email</p>
+                      <p className="font-medium text-slate-900">{user?.email || '—'}</p>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-3 text-sm">
-                    <span className="text-slate-500">Phone</span>
-                    <span className="col-span-2 font-medium text-slate-900">{student?.phone || '—'}</span>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-violet-50 text-violet-600 flex items-center justify-center shrink-0 mt-0.5">
+                        <Phone size={18} />
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-0.5">Phone</p>
+                        <p className="font-medium text-slate-900">{student?.phone || '—'}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-violet-50 text-violet-600 flex items-center justify-center shrink-0 mt-0.5">
+                        <Calendar size={18} />
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-0.5">Date of Birth</p>
+                        <p className="font-medium text-slate-900">{student?.dateOfBirth || '—'}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-3 text-sm">
-                    <span className="text-slate-500">Date of Birth</span>
-                    <span className="col-span-2 font-medium text-slate-900">{student?.dateOfBirth || '—'}</span>
+
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-violet-50 text-violet-600 flex items-center justify-center shrink-0 mt-0.5">
+                      <Users size={18} />
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-0.5">Gender</p>
+                      <p className="font-medium text-slate-900">{student?.gender || '—'}</p>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-3 text-sm">
-                    <span className="text-slate-500">Gender</span>
-                    <span className="col-span-2 font-medium text-slate-900">{student?.gender || '—'}</span>
-                  </div>
-                  <div className="grid grid-cols-3 text-sm">
-                    <span className="text-slate-500">Address</span>
-                    <span className="col-span-2 font-medium text-slate-900">{student?.address || '—'}</span>
+
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-violet-50 text-violet-600 flex items-center justify-center shrink-0 mt-0.5">
+                      <MapPin size={18} />
+                    </div>
+                    <div>
+                      <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mb-0.5">Address</p>
+                      <p className="font-medium text-slate-900">{student?.address || '—'}</p>
+                    </div>
                   </div>
                 </div>
               )}
